@@ -37,7 +37,7 @@ A full-stack web application built with Spring Boot for managing student interns
 - Spring Security
 - Spring Data JPA
 - Maven
-- Thymeleaf (if used)
+- Thymeleaf
 - MySQL / H2 Database
 
 ---
@@ -83,9 +83,9 @@ Then open your browser at:
 
 ## 📸 Screenshots
 
-_Add your UI screenshots here if available_
 
----
+![Στιγμιότυπο οθόνης 2025-06-29 182204](https://github.com/user-attachments/assets/00ee58f5-d407-4125-b4a1-1262434cbe67)
+
 
 ## 📄 License
 
