@@ -124,7 +124,7 @@ See the full license [here](./LICENSE.txt).
 ## 📬 Contact
 
 **fytilis**  
-Email: your-email@example.com  
+Email: thanasisfyt@gmail.com  
 GitHub: [github.com/fytilis](https://github.com/fytilis)
 
 ---
