@@ -1,0 +1,45 @@
+<!DOCTYPE html> 
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Assigned Positions</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-4">
+    <h2>📌 Assigned Positions</h2>
+
+    <table class="table table-bordered mt-3">
+        <thead class="thead-light">
+        <tr>
+            <th>Description</th>
+            <th>Company</th>
+            <th>Location</th>
+            <th>Supervisor</th>
+            <th>Student</th>
+            <th>Final grade</th>
+        </tr>
+        </thead>
+        <tbody>
+        <th:block th:each="pos : ${positions}">
+            <tr>
+                <td th:text="${pos.description}">Description</td>
+                <td th:text="${pos.company.fullName}">Company</td>
+                <td th:text="${pos.company.location}">Location</td>
+                <td th:text="${pos.supervisor.fullName}">Supervisor</td>
+                
+                <!-- Αν υπάρχει φοιτητής -->
+                <td th:text="${pos.student != null ? pos.student.fullName : '—'}">Student</td>
+
+                <!-- Αν υπάρχει σύνοψη -->
+                <td th:text="${#lists.isEmpty(summariesMap[pos.id]) ? '—' : summariesMap[pos.id][0].overallAvg}">Grade</td>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+
+    <a href="/committee/dashboard" class="btn btn-secondary">⬅ Back to the Dashboard</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Student's Logbook</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h2>📘 Record Logbook</h2>
+
+    
+    <div th:if="${param.success}" class="alert alert-success">
+        The statement was successfully registered!
+    </div>
+
+
+    <form th:action="@{/student/logbook}" method="post" th:object="${logbook}">
+        <div class="form-group">
+            <label>Content</label>
+            <textarea th:field="*{content}" class="form-control" rows="5" placeholder="Describe your progress..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-success">Submit</button>
+        <a href="/student/dashboard" class="btn btn-secondary ml-2">Back to Dashboard</a>
+    </form>
+
+    <hr />
+
+    
+    <h4 class="mt-4">Old Listings</h4>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Content</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="entry : ${logbookEntries}">
+                <td th:text="${#temporals.format(entry.date, 'dd/MM/yyyy HH:mm')}">01/01/2025 12:00</td>
+                <td th:text="${entry.content}">Description...</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

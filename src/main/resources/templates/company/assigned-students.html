@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My Students</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h3>📋 Trainees of the Company</h3>
+
+    
+    <div th:if="${successMessage}" class="alert alert-success" role="alert">
+        <p th:text="${successMessage}"></p>
+    </div>
+
+    <table class="table table-striped mt-4">
+        <thead>
+            <tr>
+                <th>Fullname</th>
+                <th>Username</th>
+                <th>Evaluation</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <!-- Βεβαιωνόμαστε ότι ο πίνακας δεν θα προσπαθήσει να σχεδιαστεί αν η λίστα είναι κενή -->
+        <tbody th:if="${not #lists.isEmpty(positions)}">
+            <!-- Η μεταβλητή επανάληψης είναι 'pos', που είναι αντικείμενο TraineeshipPosition -->
+            <tr th:each="pos : ${positions}">
+            
+                <!-- Αυτά τα πεδία παίρνουν δεδομένα από το αντικείμενο 'student' που περιέχεται στο 'pos' -->
+                <td th:text="${pos.student.fullName}">Fullname</td>
+                <td th:text="${pos.student.username}">Username</td>
+                
+                <td>
+                    <!-- 
+                        Δεδομένου ότι ο controller στέλνει μόνο ανατεθειμένες θέσεις,
+                        αυτή η συνθήκη th:if είναι πάντα αληθής. Μπορεί και να αφαιρεθεί.
+                    -->
+                    <div th:if="${pos.student != null}">
+                        <!-- 
+                            ΔΙΟΡΘΩΣΗ: Χρησιμοποιούμε 'pos.student.id' και 'pos.id'
+                            για να δημιουργήσουμε το σωστό URL.
+                        -->
+                        <a th:href="@{/company/evaluation/{studentId}/{positionId}(
+                                        studentId=${pos.student.id},
+                                        positionId=${pos.id}
+                                   )}"
+                           class="btn btn-success btn-sm">
+                           Evaluation
+                        </a>
+                    </div>
+                </td>
+                
+                <td>
+                    <!-- 
+                        ΔΙΟΡΘΩΣΗ: Το action της φόρμας πρέπει να αναφέρεται στο ID του φοιτητή
+                        που θέλουμε να αφαιρέσουμε, το οποίο παίρνουμε από 'pos.student.id'.
+                    -->
+                    <form th:action="@{/company/remove/{id}(id=${pos.student.id})}"
+                          method="post" style="display:inline">
+                        <button class="btn btn-danger btn-sm" type="submit"
+                                onclick="return confirm('Are you sure you want to remove this student?');">
+                            Delete
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <!-- Μήνυμα που εμφανίζεται μόνο αν δεν υπάρχουν φοιτητές -->
+    <div th:if="${#lists.isEmpty(positions)}">
+        <p class="text-center text-muted mt-4">No assigned students found.</p>
+    </div>
+
+    <a th:href="@{/company/dashboard}" class="btn btn-secondary mt-3">
+        ⬅ Back to Dashboard
+    </a>
+</div>
+</body>
+</html>

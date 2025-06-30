@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Evaluation Form</title>
+  <link rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container mt-5">
+    <h3 th:text="'Αξιολόγηση: ' + ${evaluation.student.fullName}">Evaluate Student</h3>
+
+    <form th:action="@{/company/evaluation/submit}"
+          th:object="${evaluation}"
+          method="post">
+
+      <!-- CSRF token -->
+      <input type="hidden"
+             th:name="${_csrf.parameterName}"
+             th:value="${_csrf.token}" />
+
+      <!-- carry along the two IDs + evaluatorType -->
+      <input type="hidden" th:field="*{student.id}" />
+      <input type="hidden" th:field="*{traineeshipPosition.id}" />
+      <input type="hidden" th:field="*{evaluatorType}" />
+
+      <!-- Motivation -->
+      <div class="form-group">
+        <label>Motivation</label>
+        <select class="form-control"
+                th:field="*{motivation}"
+                required>
+          <option th:each="i : ${#numbers.sequence(1,5)}"
+                  th:value="${i}"
+                  th:text="${i}">1</option>
+        </select>
+      </div>
+
+      <!-- Efficiency -->
+      <div class="form-group">
+        <label>Efficiency</label>
+        <select class="form-control"
+                th:field="*{efficiency}"
+                required>
+          <option th:each="i : ${#numbers.sequence(1,5)}"
+                  th:value="${i}"
+                  th:text="${i}">1</option>
+        </select>
+      </div>
+
+      <!-- Effectiveness -->
+      <div class="form-group">
+        <label>Effectiveness</label>
+        <select class="form-control"
+                th:field="*{effectiveness}"
+                required>
+          <option th:each="i : ${#numbers.sequence(1,5)}"
+                  th:value="${i}"
+                  th:text="${i}">1</option>
+        </select>
+      </div>
+
+      <!-- Comments -->
+      <div class="form-group">
+        <label>Comments</label>
+        <textarea class="form-control"
+                  th:field="*{comments}"
+                  rows="4"></textarea>
+      </div>
+
+      <!-- Passed? -->
+      <div class="form-check mb-3">
+        <input type="checkbox"
+               class="form-check-input"
+               th:field="*{passed}"
+               id="passedCheck">
+        <label class="form-check-label" for="passedCheck">
+          Pass
+        </label>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Submit</button>
+      <a th:href="@{/company/assigned-students}" class="btn btn-secondary">⬅ Back to assigned-student </a>
+    </form>
+  </div>
+</body>
+</html>
+
+

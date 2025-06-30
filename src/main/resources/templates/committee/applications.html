@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Αιτήσεις Φοιτητών</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h2>📄 Λίστα Αιτήσεων Φοιτητών</h2>
+
+    <!-- 🔍 Φίλτρο Θέσεων βάσει Στρατηγικής -->
+    <form class="form-inline mb-4" th:action="@{/committee/search-positions}" method="get">
+        <label class="mr-2">Στρατηγική:</label>
+        <select class="form-control mr-2" name="strategy">
+            <option value="interests">Based on Interests</option>
+            <option value="location">Based on Location</option>
+        </select>
+
+        <label class="mr-2">Student:</label>
+        <select class="form-control mr-2" name="username">
+            <option value="" disabled selected>Pick Student</option>
+            <option th:each="student : ${students}"
+                    th:value="${student.username}"
+                    th:text="${student.fullName}">
+                Student
+            </option>
+        </select>
+
+        <button type="submit" class="btn btn-outline-primary">Position Filter</button>
+    </form>
+
+    <table class="table table-bordered mt-4">
+        <thead class="thead-light">
+            <tr>
+                <th>Student </th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Application Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="app : ${applications}">
+                <td th:text="${app.student.fullName}">Student Name</td>
+                <td th:text="${app.position.description}">Position Description</td>
+                <td th:text="${app.status}">Status</td>
+                <td th:text="${#temporals.format(app.appliedAt, 'dd/MM/yyyy HH:mm')}">Application Date</td>
+                <td>
+                    <div th:if="${app.status.name() == 'PENDING'}" class="d-flex gap-2">
+
+                        <!-- ✅  -->
+                        <form th:action="@{/committee/applications/{id}/accept(id=${app.id})}" method="post">
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                            <button class="btn btn-success btn-sm" type="submit">✅ acceptance</button>
+                        </form>
+
+                        <!-- ❌  -->
+                        <form th:action="@{/committee/applications/{id}/reject(id=${app.id})}" method="post">
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                            <button class="btn btn-danger btn-sm" type="submit">❌ Drop</button>
+                        </form>
+
+                    </div>
+                    <div th:if="${app.status.name() != 'PENDING'}">
+                        <span class="badge bg-secondary" th:text="${app.status}"></span>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="/committee/dashboard" class="btn btn-secondary mt-3">⬅ Back to the Dashboard</a>
+</div>
+</body>
+</html>

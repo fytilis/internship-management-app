@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Οι Θέσεις Μου</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+</head>
+<body class="bg-light">
+
+<div class="container my-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-primary">📋 My Traineeship Positions</h2>
+        <a th:href="@{/company/dashboard}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Back to the Dashboard
+        </a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body p-4">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Description</th>
+                            <th scope="col">Location</th>
+                            <th scope="col">Starting Date</th>
+                            <th scope="col">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="pos : ${positions}">
+                            <td th:text="${pos.description}">Description</td>
+                            <td th:text="${pos.company.location}">Location</td>
+                            <td th:text="${pos.startDate}">Starting Date</td>
+                            <td>
+                                <span th:if="${statusMap[pos.id] == 'Assigned'}" class="badge badge-success p-2">
+                                    <i class="bi bi-check-circle-fill"></i> Assigned
+                                </span>
+                                <span th:if="${statusMap[pos.id] == 'Pending'}" class="badge badge-warning p-2">
+                                    <i class="bi bi-hourglass-split"></i> Pending
+                                </span>
+                            </td>
+                        </tr>
+                        <tr th:if="${positions.isEmpty()}">
+                            <td colspan="4" class="text-center text-muted">No available positions exists.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
+
+

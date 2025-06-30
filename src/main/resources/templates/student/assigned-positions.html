@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Assigned Positions</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+        .dashboard-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 999;
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-primary">📌 My Assigned Traineeship Position</h2>
+
+    <div th:if="${assignedPosition != null}" class="alert alert-success">
+        🎉 You have been assigned a position: <strong th:text="${assignedPosition.description}">position</strong>
+        from Company <strong th:text="${assignedPosition.company.fullName}">Company</strong>!
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Description</th>
+                            <th>Company</th>
+                            <th>Location</th>
+                            <th>State of traineeshipPosition</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="app : ${applications}">
+                            <td th:text="${app.position.description}">Position Description</td>
+                            <td th:text="${app.position.company.fullName}">Company Name</td>
+                            <td th:text="${app.position.company.location}">Company Location</td>
+                            <td>
+                                <span th:if="${app.position.status == T(myy803.springboot.sb_tutorial_7_signup_signin.model.PositionStatus).ASSIGNED}"
+                                      class="badge badge-success">
+                                    <i class="bi bi-check-circle-fill"></i> Assigned
+                                </span>
+                                <span th:unless="${app.position.status == T(myy803.springboot.sb_tutorial_7_signup_signin.model.PositionStatus).ASSIGNED}"
+                                      class="badge badge-secondary"
+                                      th:text="${app.position.status}">
+                                    Status
+                                </span>
+                            </td>
+                        </tr>
+                        <tr th:if="${applications.size() == 0}">
+                            <td colspan="4" class="text-center text-muted">No assigned positions found.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Κουμπί dashboard κάτω αριστερά -->
+<a href="/student/dashboard" class="btn btn-outline-secondary dashboard-btn">⬅ Back to the dashboard</a>
+
+</body>
+</html>
+

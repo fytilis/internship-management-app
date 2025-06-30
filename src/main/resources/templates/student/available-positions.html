@@ -1,0 +1,75 @@
+<!DOCTYPE html> 
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Available traineeship positions</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+    <style>
+        .dashboard-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-0">Available traineeship positions</h2>
+    </div>
+
+    <form method="get" th:action="@{/student/available-positions}" class="form-inline mb-4">
+        <label for="strategy" class="mr-2 font-weight-bold">Filter by:</label>
+        <select name="strategy" id="strategy" class="form-control mr-2">
+            <option th:value="interests" th:selected="${strategy == 'interests'}">Interests</option>
+            <option th:value="location" th:selected="${strategy == 'location'}">Location</option>
+            <option th:value="composite" th:selected="${strategy == 'composite'}">Interests & Location</option>
+        </select>
+        <button type="submit" class="btn btn-info">Show</button>
+    </form>
+
+    <div th:if="${success}" class="alert alert-success" th:text="${success}">Your application was successfull!</div>
+
+    <div th:if="${positions != null and !positions.isEmpty()}">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-dark">
+            <tr>
+                <th>Company</th>
+                <th>Description</th>
+                <th>Location</th>
+                <th>Starting Date</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="position : ${positions}">
+                <td th:text="${position.company.fullName}">Company</td>
+                <td th:text="${position.description}">Description</td>
+                <td th:text="${position.company.location}">Location</td>
+                <td th:text="${position.startDate}">Date</td>
+                <td>
+                    <div th:if="${#lists.contains(appliedPositionIds, position.id)}">
+                        <button class="btn btn-success btn-sm" disabled>✔ You already did an application.</button>
+                    </div>
+                    <div th:unless="${#lists.contains(appliedPositionIds, position.id)}">
+                        <form th:action="@{/student/apply}" method="post" class="d-inline">
+                            <input type="hidden" name="positionId" th:value="${position.id}" />
+                            <button type="submit" class="btn btn-primary btn-sm">Apply</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:if="${positions == null or positions.isEmpty()}" class="alert alert-warning">
+        No positions found for this strategy.
+    </div>
+</div>
+
+<!-- Back to dashboard button placed fixed to bottom left -->
+<a href="/student/dashboard" class="btn btn-outline-secondary dashboard-btn">⬅ Back to the dashboard</a>
+
+</body>
+</html>

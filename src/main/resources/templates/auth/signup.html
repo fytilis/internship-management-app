@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h3>Registration</h3>
+
+    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+    <form th:action="@{/register}" method="post" th:object="${user}">
+        <div class="form-group">
+            <input type="text" th:field="*{username}" class="form-control" placeholder="Username" required />
+        </div>
+
+        <div class="form-group">
+            <input type="password" th:field="*{password}" class="form-control" placeholder="Password" required />
+        </div>
+
+        <div class="form-group">
+            <input type="text" th:field="*{fullName}" class="form-control" placeholder="Full Name" required />
+        </div>
+
+        <div class="form-group">
+            <select th:field="*{role}" class="form-control" required>
+                <option value="">Select Role</option>
+                <option value="STUDENT">STUDENT</option>
+                <option value="COMPANY">COMPANY</option>
+                <option value="PROFESSOR">PROFESSOR</option>
+                <option value="COMMITTEE">COMMITTEE</option>
+            </select>
+        </div>
+         <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+    		<div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+		
+        <button type="submit" class="btn btn-info">Register</button>
+        <a href="/login" class="btn btn-secondary">Login</a>
+    </form>
+</div>
+</body>
+</html>

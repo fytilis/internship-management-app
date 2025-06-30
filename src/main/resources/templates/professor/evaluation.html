@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Evaluation</title>
+  <link
+    rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+  <h2>📋 Student Evaluation</h2>
+
+  <p>
+    <strong>Student:</strong>
+    <span th:text="${evaluation.student.fullName}"></span>
+  </p>
+
+  <form
+    method="post"
+    th:action="@{/professor/evaluation/submit}"
+    th:object="${evaluation}">
+
+    
+    <input type="hidden" th:field="*{student.id}" />
+    <input type="hidden" th:field="*{traineeshipPosition.id}" />
+    <input type="hidden" th:field="*{evaluatorType}" />
+    <input type="hidden" th:field="*{id}" />
+
+    <div class="form-group">
+      <label for="motivation">Motivation (1–5)</label>
+      <input
+        type="number"
+        th:field="*{motivation}"
+        class="form-control"
+        min="1" max="5"
+        required />
+    </div>
+
+    <div class="form-group">
+      <label for="effectiveness">Effectiveness (1–5)</label>
+      <input
+        type="number"
+        th:field="*{effectiveness}"
+        class="form-control"
+        min="1" max="5"
+        required />
+    </div>
+
+    <div class="form-group">
+      <label for="efficiency">Efficiency (1–5)</label>
+      <input
+        type="number"
+        th:field="*{efficiency}"
+        class="form-control"
+        min="1" max="5"
+        required />
+    </div>
+
+    <div class="form-group">
+      <label for="comments">Comments</label>
+      <textarea
+        th:field="*{comments}"
+        class="form-control"
+        rows="3"
+        placeholder="Comments for student."></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-success">Submit Evaluation</button>
+    <a href="/professor/assigned-positions" class="btn btn-secondary ml-2">
+      ⬅ Back to assigned-positions
+    </a>
+  </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Supervised Positions</title>
+  <link
+    rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+  <h2>📋 Your Supervised Positions</h2>
+
+  <div
+    th:if="${successMessage}"
+    class="alert alert-success"
+    th:text="${successMessage}">
+  </div>
+
+  <table class="table table-striped mt-4">
+    <thead class="thead-dark">
+      <tr>
+        <th>Description</th>
+        <th>Student</th>
+        <th>Evaluation</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="pos : ${positions}">
+        <td th:text="${pos.description}">Description</td>
+        <td th:text="${pos.student != null ? pos.student.fullName : '—'}">Student</td>
+        <td>
+          <div th:if="${pos.student != null}">
+           
+            <a
+              th:href="@{'/professor/evaluation/' + ${pos.student.id} + '/' + ${pos.id}}"
+              class="btn btn-success btn-sm">
+              Evaluate
+            </a>
+          </div>
+          <div th:unless="${pos.student != null}">
+            <span class="text-muted">—</span>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <a href="/professor/dashboard" class="btn btn-secondary mt-3">
+    ⬅ Back to Dashboard
+  </a>
+</div>
+</body>
+</html>
